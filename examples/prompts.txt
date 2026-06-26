@@ -1,0 +1,4 @@
+hello rust
+what is ownership
+ai inference with rust
+cargo build project

@@ -1,0 +1,10 @@
+{
+    "hello": "Hello! Nice to meet you.",
+    "rust": "Rust is fast, safe and concurrent.",
+    "ownership": "Ownership is Rust's core memory safety mechanism.",
+    "memory": "Rust prevents memory leaks and dangling pointers.",
+    "thread": "Rust provides fearless concurrency.",
+    "cargo": "Cargo is Rust's official package manager.",
+    "tokio": "Tokio provides asynchronous runtime.",
+    "ai": "Rust is becoming increasingly popular in AI infrastructure."
+}

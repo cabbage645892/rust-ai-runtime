@@ -1,0 +1,5 @@
+# Rust AI Runtime Toolkit configuration
+rules_path = "assets/models/rules.json"
+markov_corpus_path = "assets/models/markov_corpus.txt"
+history_path = "history/history.json"
+worker_count = 4

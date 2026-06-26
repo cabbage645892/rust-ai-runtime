@@ -1,0 +1,17 @@
+Rust is memory safe.
+Rust is fast.
+Rust is productive.
+Rust uses ownership.
+Rust provides zero cost abstractions.
+Rust enables fearless concurrency.
+Rust prevents data races.
+Ownership guarantees memory safety.
+Cargo builds Rust projects.
+Cargo manages dependencies.
+Cargo downloads crates.
+Tokio provides asynchronous runtime.
+Tokio supports async tasks.
+AI systems benefit from Rust performance.
+Rust powers high performance AI inference.
+Local inference improves privacy.
+Rust applications are reliable.
