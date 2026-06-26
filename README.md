@@ -8,50 +8,47 @@
 
 项目目标是使用 Rust 构建一个结构完整、可运行、可测试、可扩展的小型本地 AI 推理系统，体现 Rust 在系统工具、命令行工具、模块化设计、错误处理和异步并发方面的优势。
 
----
-
 ## 2. 功能特性
 
 本项目目前实现了以下功能：
 
-- 本地文本 Tokenizer
+（1）本地文本 Tokenizer
   - 支持文本编码
   - 支持 token 解码
   - 支持词表维护
 
-- 统一推理接口
+（2）统一推理接口
   - 使用 `InferenceModel` trait 抽象不同模型
   - 支持模型注册
   - 支持模型切换
   - 支持统一的 `infer` 推理调用
 
-- 本地推理模型
+（3）本地推理模型
   - `RuleBasedModel`：基于本地 JSON 规则文件进行关键词匹配推理
   - `MarkovModel`：基于本地语料构建 Markov 状态转移关系并生成文本
 
-- 异步任务调度
+（4）异步任务调度
   - 使用 Tokio 异步运行时
   - 使用 mpsc channel 实现任务队列
   - 使用 WorkerPool 处理多个推理任务
   - 使用 `Arc` 在线程任务之间共享推理引擎
 
-- 命令行工具
+（5）命令行工具
   - 支持单次推理
   - 支持批量推理
   - 支持 Benchmark 性能测试
   - 支持查看推理历史
   - 支持 Demo 演示模式
 
-- 推理历史记录
+（6）推理历史记录
   - 将推理输入、模型名称、输出结果和耗时保存到本地 JSON 文件
 
-- 测试与工程规范
+（7）测试与工程规范
   - 包含单元测试和关键功能测试
   - 支持 `cargo fmt`
   - 支持 `cargo clippy`
   - 支持 `cargo test`
 
----
 
 ## 3. 项目目录结构
 
@@ -90,12 +87,14 @@ rust-ai-runtime/
 │   │   ├── traits.rs
 │   │   └── models/
 │   │       ├── markov.rs
+│   │       ├── mod.rs
 │   │       └── rule_based.rs
 │   │
 │   └── scheduler/
 │       ├── pool.rs
 │       ├── queue.rs
 │       ├── task.rs
+│       ├── mod.rs
 │       └── worker.rs
 │
 ├── tests/
@@ -108,38 +107,17 @@ rust-ai-runtime/
 └── README.md
 ```
 
----
-
-## 4. 环境要求
-
-运行本项目需要安装 Rust 工具链。
-
-推荐环境：
-
-- Rust 版本：Rust 2021 Edition 或更高
-- Cargo：随 Rust 一起安装
-- 操作系统：Windows / Linux / macOS 均可运行
-
-查看本机 Rust 版本：
-
-```bash
-rustc --version
-cargo --version
-```
-
----
-
-## 5. 依赖说明
+## 4. 依赖说明
 
 项目主要依赖如下：
 
-| 依赖 | 用途 |
-|---|---|
-| `anyhow` | 统一错误处理，简化 `Result` 返回 |
-| `serde` | 数据序列化与反序列化 |
-| `serde_json` | 读取规则模型 JSON 文件、保存历史记录 |
-| `tokio` | 异步运行时、异步任务、mpsc channel |
-| `rand` | Markov 模型文本生成时进行随机选择 |
+| 依赖          | 用途                              |
+|--------------|----------------------------------|          
+| `anyhow`     | 统一错误处理，简化 `Result` 返回   |
+| `serde`      | 数据序列化与反序列化               |
+| `serde_json` | 读取规则模型 JSON 文件、保存历史记录|
+| `tokio`      | 异步运行时、异步任务、mpsc channel |
+| `rand`       | Markov 模型文本生成时进行随机选择  |
 
 对应的 `Cargo.toml` 依赖示例：
 
@@ -154,9 +132,7 @@ rand = "0.8"
 
 如果项目实际 `Cargo.toml` 中已经存在这些依赖，无需重复添加。
 
----
-
-## 6. 编译方法
+## 5. 编译方法
 
 在项目根目录下执行：
 
@@ -182,16 +158,12 @@ release 版本可执行文件位于：
 target/release/
 ```
 
-提交作业时不建议提交 `target/` 目录，因为该目录体积较大，可以通过重新编译生成。
+## 6. 运行方法
 
----
-
-## 7. 运行方法
-
-### 7.1 查看帮助信息
+### 6.1 查看帮助信息
 
 ```bash
-cargo run -- help
+cargo run 
 ```
 
 该命令会显示当前支持的所有命令，包括：
@@ -202,9 +174,8 @@ cargo run -- help
 - `benchmark`
 - `history`
 
----
 
-### 7.2 运行 Demo
+### 6.2 运行 Demo
 
 ```bash
 cargo run -- demo
@@ -212,9 +183,7 @@ cargo run -- demo
 
 Demo 模式会启动 Runtime，加载本地模型，并通过 WorkerPool 提交几个示例推理任务，用于展示异步任务调度和本地推理流程。
 
----
-
-### 7.3 使用规则模型进行单次推理
+### 6.3 使用规则模型进行单次推理
 
 ```bash
 cargo run -- infer --model rule --prompt "hello rust"
@@ -231,9 +200,7 @@ cargo run -- infer --model rule --prompt "hello rust"
 5. 输出推理结果
 6. 将推理记录保存到本地 history 文件
 
----
-
-### 7.4 使用 Markov 模型进行单次推理
+### 6.4 使用 Markov 模型进行单次推理
 
 ```bash
 cargo run -- infer --model markov --prompt "Rust is"
@@ -243,9 +210,7 @@ cargo run -- infer --model markov --prompt "Rust is"
 
 `MarkovModel` 会从本地语料文件 `assets/models/markov_corpus.txt` 中构建状态转移表，并根据输入 prompt 生成简单文本。
 
----
-
-### 7.5 批量推理
+### 6.5 批量推理
 
 ```bash
 cargo run -- batch --model rule --input examples/prompts.txt
@@ -264,9 +229,7 @@ cargo build project
 
 每一行会作为一次独立推理请求。
 
----
-
-### 7.6 Benchmark 性能测试
+### 6.6 Benchmark 性能测试
 
 ```bash
 cargo run -- benchmark --model rule --requests 20 --workers 4
@@ -274,11 +237,11 @@ cargo run -- benchmark --model rule --requests 20 --workers 4
 
 参数说明：
 
-| 参数 | 说明 |
-|---|---|
-| `--model` | 指定模型，支持 `rule` 和 `markov` |
-| `--requests` | 模拟推理请求数量 |
-| `--workers` | 并发 worker 数量 |
+| 参数         | 说明                             |
+|--------------|----------------------------------|
+| `--model`    | 指定模型，支持 `rule` 和 `markov` |
+| `--requests` | 模拟推理请求数量                  |
+| `--workers`  | 并发 worker 数量                 |
 
 Benchmark 会输出：
 
@@ -290,9 +253,7 @@ Benchmark 会输出：
 
 该功能用于展示项目的异步任务调度和并发处理能力。
 
----
-
-### 7.7 查看推理历史
+### 6.7 查看推理历史
 
 ```bash
 cargo run -- history --limit 5
@@ -315,9 +276,7 @@ cargo run -- history --limit 5
 history/history.json
 ```
 
----
-
-## 8. 配置文件说明
+## 7. 配置文件说明
 
 项目配置文件位于：
 
@@ -336,20 +295,18 @@ worker_count = 4
 
 字段说明：
 
-| 字段 | 说明 |
-|---|---|
-| `rules_path` | 规则模型 JSON 文件路径 |
-| `markov_corpus_path` | Markov 模型语料文件路径 |
-| `history_path` | 推理历史记录保存路径 |
-| `worker_count` | Demo 模式下默认 worker 数量 |
+| 字段                  | 说明                     |
+|----------------------|--------------------------|
+| `rules_path`         | 规则模型 JSON 文件路径    |
+| `markov_corpus_path` | Markov 模型语料文件路径   |
+| `history_path`       | 推理历史记录保存路径      |
+| `worker_count`       | Demo模式下默认worker数量 |
 
 如果配置文件不存在，程序会使用默认配置。
 
----
+## 8. 模型文件说明
 
-## 9. 模型文件说明
-
-### 9.1 规则模型文件
+### 8.1 规则模型文件
 
 路径：
 
@@ -361,9 +318,7 @@ assets/models/rules.json
 
 规则模型会根据输入 prompt 中的关键词返回对应响应。如果没有匹配到规则，则返回默认回复。
 
----
-
-### 9.2 Markov 语料文件
+### 8.2 Markov 语料文件
 
 路径：
 
@@ -375,9 +330,7 @@ assets/models/markov_corpus.txt
 
 程序启动时会读取该文本文件，并构建简单的词语状态转移关系。
 
----
-
-## 10. 测试方法
+## 9. 测试方法
 
 运行全部测试：
 
@@ -395,9 +348,7 @@ cargo test
 - InferenceEngine 模型切换
 - InferenceEngine 推理调用
 
----
-
-## 11. 代码格式化与静态检查
+## 10. 代码格式化与静态检查
 
 格式化代码：
 
@@ -411,23 +362,11 @@ cargo fmt
 cargo clippy
 ```
 
-推荐提交前依次运行：
-
-```bash
-cargo fmt
-cargo clippy
-cargo test
-```
-
-如果以上命令均通过，说明项目在格式、代码质量和基本功能方面满足提交要求。
-
----
-
-## 12. Rust 特性体现
+## 11. Rust 特性体现
 
 本项目主要体现了以下 Rust 语言特性：
 
-### 12.1 所有权与借用
+### 11.1 所有权与借用
 
 项目中大量使用所有权和借用机制来管理字符串、推理上下文、模型对象和任务数据。例如：
 
@@ -436,7 +375,7 @@ cargo test
 - 推理引擎通过引用调用模型推理方法
 - WorkerPool 中使用 `Arc` 安全共享推理引擎
 
-### 12.2 结构体与枚举
+### 11.2 结构体与枚举
 
 项目中使用多个结构体组织数据，例如：
 
@@ -461,7 +400,7 @@ enum Command {
 }
 ```
 
-### 12.3 Trait 抽象
+### 11.3 Trait 抽象
 
 项目通过 `InferenceModel` trait 抽象不同模型：
 
@@ -474,7 +413,7 @@ pub trait InferenceModel {
 
 这样 `RuleBasedModel` 和 `MarkovModel` 可以通过统一接口被推理引擎调用，提高了项目的可扩展性。
 
-### 12.4 Result 错误处理
+### 11.4 Result 错误处理
 
 项目使用 `anyhow::Result` 统一处理错误，避免大量使用 `unwrap` 或 `expect`。
 
@@ -488,7 +427,7 @@ pub trait InferenceModel {
 
 这些错误都会通过 `Result` 返回并向上传播。
 
-### 12.5 异步与并发
+### 11.5 异步与并发
 
 项目使用 Tokio 实现异步任务调度：
 
@@ -499,7 +438,7 @@ pub trait InferenceModel {
 
 这部分体现了 Rust 在安全并发方面的优势。
 
-### 12.6 模块化设计
+### 11.6 模块化设计
 
 项目按功能拆分为多个模块：
 
@@ -513,11 +452,7 @@ pub trait InferenceModel {
 
 这种结构便于维护、测试和扩展。
 
----
-
-## 13. 示例运行流程
-
-推荐演示时按如下顺序运行：
+## 12. 示例运行流程
 
 ```bash
 cargo run -- help
@@ -530,9 +465,7 @@ cargo run -- history --limit 5
 cargo test
 ```
 
----
-
-## 14. 项目总结
+## 13. 项目总结
 
 本项目实现了一个基于 Rust 的轻量级本地 AI 推理工具链。虽然它不是完整的大模型推理框架，但已经包含了本地模型加载、统一推理接口、异步任务调度、命令行交互、批量处理、性能测试和历史记录等完整流程。
 
